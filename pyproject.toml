@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ChimkenMPRIS"
+version = "0.0.1"
+requires-python = ">= 3.9"
+dependencies = [ "sdbus" ]
+authors = [ { name = "sand" }, ]
+
+description = "A small MPRIS server made for my app but also usable"
+readme = "PYPI_README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+keywords = ["chimken", "MPRIS", "dbus"]
+
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Intended Audience :: Developers",
+	"Operating System :: POSIX :: Linux",
+	]
+
+
+
+[project.urls]
+github = "https://github.com/sandbuster2005/Chimken-MPRIS.git"
+#Documentation = "https://sandbuster2005.github.io/ChimkenJournalism"

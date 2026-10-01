@@ -1,12 +1,11 @@
 import asyncio
 import threading
 from sdbus import request_default_bus_name_async
-from Player import  MediaPlayer2Player
-from Root import MediaPlayer2Root
-
-
+from .Player import  MediaPlayer2Player
+from .Root import MediaPlayer2Root
 
 class MPRIS_server:
+
 
     def __init__(self):
         self.action_queue = []   # D-Bus -> TUI (e.g., media keys pressed)
@@ -14,6 +13,7 @@ class MPRIS_server:
 
         self.root_interface = MediaPlayer2Root( self.action_queue )
         self.player_interface = MediaPlayer2Player( self.action_queue )
+
 
     def run(self):
         loop = asyncio.new_event_loop()
@@ -34,9 +34,5 @@ class MPRIS_server:
         # This keeps the D-Bus listener running indefinitely in the background thread
         loop.run_forever()
 
-MPRIS = MPRIS_server()
-dbus_thread = threading.Thread(target=MPRIS.run, daemon=True).start()
-#
-while 1:
-    if MPRIS.action_queue:
-        print(f"Received action from MPRIS: {MPRIS.action_queue}")
+mpris = MPRIS_server()
+mpris.run()

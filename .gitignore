@@ -1,2 +1,5 @@
 .venv
 sketch.py
+dist
+Chimken_MPRIS.egg-info
+__pycache__
