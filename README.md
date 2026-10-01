@@ -1,0 +1,1 @@
+a python lib with the goal to make a python MPRIS implementation for dbus
