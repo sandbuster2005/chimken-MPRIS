@@ -27,7 +27,7 @@ class MediaPlayer2Player(DbusInterfaceCommonAsync, interface_name='org.mpris.Med
         self._can_go_previous = True
         self._can_play = True
         self._can_pause = True
-        self._can_seek = True
+        self._can_seek = False
         self._can_control = True
 
     @dbus_property_async('s', flags=DbusPropertyEmitsChangeFlag )
@@ -205,4 +205,5 @@ class MediaPlayer2Player(DbusInterfaceCommonAsync, interface_name='org.mpris.Med
 
     @dbus_method_async('x')
     async def seek(self,time_offset):
-        self.action_queue.append(f"seek:{time_offset}")
+        pass
+        #self.action_queue.append(f"seek:{time_offset}")
