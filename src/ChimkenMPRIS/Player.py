@@ -7,6 +7,12 @@ from sdbus import (
 
 class MediaPlayer2Player(DbusInterfaceCommonAsync, interface_name='org.mpris.MediaPlayer2.Player'):
 
+
+
+
+
+
+
     def __init__(self, action_queue):
 
         super().__init__()
@@ -14,8 +20,8 @@ class MediaPlayer2Player(DbusInterfaceCommonAsync, interface_name='org.mpris.Med
 
 
 
-        self._playback_status = "Playing"
-        self._loop_status = "Stopped"
+        self._playback_status = "Stopped"
+        self._loop_status = "None"
         self._rate = 1.0
         self._shuffle = False
         self._metadata = {}
@@ -30,6 +36,7 @@ class MediaPlayer2Player(DbusInterfaceCommonAsync, interface_name='org.mpris.Med
         self._can_seek = False
         self._can_control = True
 
+
     @dbus_property_async('s', flags=DbusPropertyEmitsChangeFlag )
     def playback_status(self) -> str :
         # In a real app, query your state variables here
@@ -38,6 +45,7 @@ class MediaPlayer2Player(DbusInterfaceCommonAsync, interface_name='org.mpris.Med
     @playback_status.setter
     def playback_status_setter(self, new_status: str):
         self._playback_status = new_status
+
 
 
 

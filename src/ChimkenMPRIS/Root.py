@@ -5,6 +5,18 @@ from sdbus import (
     DbusPropertyEmitsChangeFlag
 
 )
+import sys
+
+def export(fn):
+    mod = sys.modules[fn.__module__]
+    if hasattr(mod, '__all__'):
+        mod.__all__.append(fn.__name__)
+    else:
+        mod.__all__ = [fn.__name__]
+    return fn
+
+
+
 
 class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.MediaPlayer2'):
 
@@ -21,7 +33,9 @@ class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.Media
          self._supported_uri_schemes = ["file"]
          self._supported_mime_types = ["audio/mpeg"]
 
+
     @dbus_property_async('b',  flags=DbusPropertyEmitsChangeFlag)
+    @export
     def can_quit(self) -> bool:
         return self._can_quit
 
@@ -32,6 +46,7 @@ class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.Media
 
 
     @dbus_property_async('b',  flags=DbusPropertyEmitsChangeFlag)
+    @export
     def can_raise(self) -> bool:
         return self._can_raise
 
@@ -42,6 +57,7 @@ class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.Media
 
 
     @dbus_property_async('b',  flags=DbusPropertyEmitsChangeFlag)
+    @export
     def can_set_fullscreen(self) -> bool:
         return self._can_set_fulscreen
 
@@ -52,6 +68,7 @@ class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.Media
 
 
     @dbus_property_async('b',  flags=DbusPropertyEmitsChangeFlag)
+    @export
     def has_track_list(self) -> bool :
         return self._has_track_list
 
@@ -62,6 +79,7 @@ class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.Media
 
 
     @dbus_property_async('s',  flags=DbusPropertyEmitsChangeFlag)
+    @export
     def identity(self) -> str:
         return self._identity
 
@@ -72,6 +90,7 @@ class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.Media
 
 
     @dbus_property_async('s',  flags=DbusPropertyEmitsChangeFlag)
+    @export
     def desktop_entry(self) -> str:
         return self._desktop_entry
 
@@ -82,6 +101,7 @@ class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.Media
 
 
     @dbus_property_async('as',  flags=DbusPropertyEmitsChangeFlag)
+    @export
     def supported_uri_schemes(self) -> list[str]:
         return self._supported_uri_schemes
 
@@ -92,6 +112,7 @@ class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.Media
 
 
     @dbus_property_async('as',  flags=DbusPropertyEmitsChangeFlag)
+    @export
     def supported_mime_types(self) -> list[str]:
         return self._supported_mime_types
 
@@ -102,5 +123,6 @@ class MediaPlayer2Root(DbusInterfaceCommonAsync, interface_name='org.mpris.Media
 
 
     @dbus_method_async('')
+    @export
     async def quit(self) -> None:
         self.action_queue.append("QUIT")

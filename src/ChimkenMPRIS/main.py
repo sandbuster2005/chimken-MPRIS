@@ -3,7 +3,7 @@ import threading
 from sdbus import request_default_bus_name_async
 from .Player import  MediaPlayer2Player
 from .Root import MediaPlayer2Root
-
+from .Debug import ChimkenDebug
 class MPRIS_server:
 
 
@@ -13,7 +13,7 @@ class MPRIS_server:
 
         self.root = MediaPlayer2Root( self.action_queue ) # interface
         self.player = MediaPlayer2Player( self.action_queue )# interface
-
+        self.debug = ChimkenDebug( self.action_queue )
 
         self._properties = {
 
@@ -38,7 +38,8 @@ class MPRIS_server:
                     "desktop_entry", "supported_uri_schemes",
                     "supported_mime_types",
                 ]
-            }
+            },
+
         }
 
 
@@ -57,15 +58,19 @@ class MPRIS_server:
 
             self.root.export_to_dbus( object_path )
             self.player.export_to_dbus( object_path )
+            self.debug.export_to_dbus( "/org/ChimkenMuziks")
 
             async def sync_tui_states():
                 while True:
                     if self.update_queue:
-                        prop_name, new_value = self.update_queue.pop()
+                        prop_name, new_value = self.update_queue.pop(0)
 
-                        if prop_name in self._properties:
-                             propertie = getattr(self.player, prop_name)
-                             await propertie.set_async( new_value )
+                        owner = self._properties.get(prop_name)
+
+                        if owner:
+                            prop = getattr(getattr(self, owner), prop_name)
+                            await prop.set_async( new_value )
+
 
                     await asyncio.sleep(0.05)
 
@@ -75,3 +80,9 @@ class MPRIS_server:
         loop.run_until_complete( main() )
         # This keeps the D-Bus listener running indefinitely in the background thread
         loop.run_forever()
+
+
+
+if __name__== "__main__":
+    server = MPRIS_server()
+    server.run()
